@@ -1,4 +1,4 @@
-# Unofficial NASA's Astronomy Picture of the Day API documentation
+# Unofficial NASA's Astronomy Picture of the Day API Documentation
 
 [nasa-apod.portaldocs.dev](https://nasa-apod.portaldocs.dev)
 
