@@ -1,0 +1,335 @@
+openapi: 3.0.2
+x-flat-nav: true
+info:
+  title: Astronomy Picture of the Day API
+  version: v1
+  contact:
+    email: hello@portal.dev
+    url: https://portal.dev
+  license:
+    name: MIT License
+    url: https://opensource.org/licenses/MIT
+  x-logo:
+    url: >-
+      https://res.cloudinary.com/portal-docs/image/upload/w_270,h_270,f_auto/v1642430215/bubble-universe_n2hjql.png
+    align: center
+    width: 90px;
+    height: 90px;
+    title: Unofficial Astronomy Picture of the Day API Docs
+  x-favicon:
+    url: >-
+      https://res.cloudinary.com/portal-docs/image/upload/w_64,h_64,f_auto/v1642430215/bubble-universe_n2hjql.png
+  x-social:
+    twitter:
+      card: summary_large_image
+      site: "@portal_docs"
+      siteId: null
+      creator: "@vrepsys"
+      creatorId: null
+      title: Unofficial Astronomy Picture of the Day API Documentation
+      description: Retrieve astronomy pictures of the day using NASA's APOD API.
+      image: >-
+        https://res.cloudinary.com/portal-docs/image/upload/w_1168,f_auto/v1642498547/comet-streams-apod_fmgu0f.jpg
+      imageAlt: Astronomy picture of the day for on 25 Dec 2021.
+    og:
+      title: Unofficial Astronomy Picture of the Day API Documentation
+      description: Retrieve astronomy pictures of the day using NASA's APOD API.
+      image: >-
+        https://res.cloudinary.com/portal-docs/image/upload/w_1168,f_auto/v1642498547/comet-streams-apod_fmgu0f.jpg
+  x-analytics:
+    ga:
+      trackingId: G-P8X594P1G8
+  description: >-
+    The Astronomy Picture of the Day (APOD) API lets you retrieve NASA's
+    [astronomy picture of the day](https://apod.nasa.gov/apod/astropix.html),
+    and its associated information in JSON format.
+
+
+    Every day the APOD website features a new astronomical image and a brief
+    description written by a professional astronomer. Based on the data provided
+    at
+    [analytics.usa.gov](analytics.usa.gov/national-aeronautics-space-administration/)
+    The Astronomy Picture of the Day
+    [website](https://apod.nasa.gov/apod/astropix.html) is one of the most
+    accessed NASA websites.
+
+    ![Picture of the day on 25 Dec
+    2021](https://res.cloudinary.com/portal-docs/image/upload/w_1168,f_auto/v1642498547/comet-streams-apod_fmgu0f.jpg
+    "Astronomy picture of the day on 25 Dec 2021. The tail of a comet streams
+    across this three degree wide telescopic field of view captured under dark
+    Namibian skies on December 21. Copyright: [CARA
+    Project](https://satellitesafety.gsfc.nasa.gov/cara.html).")
+
+
+
+    APOD API is an [open source project](https://github.com/nasa/apod-api) you
+    can run on your own machine.  The API is also available online on an
+    [endpoint](https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY) set up by
+    NASA.
+
+
+    The API can return a picture of a specific day in the past or a range of
+    historical pictures based on supplied `start_date` and `end_date`. The JSON
+    data returned includes properties such as the image `url`, `explanation`,
+    and `copyright`. For a full list of properties and request parameters see
+    the [API section](api).
+
+
+    **Please note** that this documentation has no affiliation with NASA or the APOD API.
+    Refer to the [APOD API Github page](https://github.com/nasa/apod-api) for the official documentation.
+
+
+
+    This document was generated from an [OpenApi file available on GitHub](https://github.com/portaldev/apod-api-docs).
+
+
+
+    # Authentication
+
+    You can authenticate by passing the `api_key` parameter to the APOD endpoint
+    e.g. `https://api.nasa.gov/planetary/apod?api_key=YOUR_API_KEY`. Get your
+    api key here: [api.nasa.gov/#signUp](https://api.nasa.gov/#signUp).
+
+
+    You can also use an already existing `DEMO_KEY` without creating your own
+    key.
+
+
+    The self-hosted version of the API does not require authentication.
+servers:
+  - url: https://api.nasa.gov/planetary/apod
+paths:
+  https://api.nasa.gov/planetary/apod:
+    get:
+      tags:
+        - Retrieve Astronomy Picture of the Day
+      summary: API
+      description: >-
+        The endpoint `https://api.nasa.gov/planetary/apod` returns a json object or an array of objects depending on request parameters.
+
+
+
+        The json objects contain the `url` for the astronomy picture of the day and other information related to that image.
+      parameters:
+        - name: api_key
+          in: query
+          description: >-
+            Your NASA API key. Create your API key by signing up on
+            [https://api.nasa.gov/#signUp](https://api.nasa.gov/#signUp). You
+            can also use the key `DEMO_KEY`.
+          required: true
+          schema:
+            type: string
+        - name: date
+          in: query
+          description: >-
+            A string in `YYYY-MM-DD` format indicating the date of the APOD
+            image (e.g. `2014-11-03`). Defaults to today's date. Must be after
+            `1995-06-16`, the first day an APOD picture was posted. There are no
+            images for tomorrow available through this API.
+          required: false
+          schema:
+            type: string
+        - name: concept_tags
+          in: query
+          description: >
+            A boolean indicating whether concept tags should be returned with
+            the rest of the response. Defaults to `False`.
+          required: false
+          schema:
+            enum:
+              - "True"
+              - "False"
+        - name: hd
+          in: query
+          description: >
+            A boolean parameter indicating whether or not high-resolution images
+            should be returned. This is a legacy parameter, high-resolution urls
+            are returned regardless of the specified parameter value.
+          required: false
+          schema:
+            enum:
+              - "True"
+              - "False"
+        - name: count
+          in: query
+          description: >
+            A positive integer, no greater than 100. If this is specified then
+            `count` randomly chosen images will be returned in a JSON array.
+            Cannot be used in conjunction with `date` or `start_date` and
+            `end_date`.
+          required: false
+          schema: null
+        - name: start_date
+          in: query
+          description: >
+            A string in `YYYY-MM-DD` format indicating the start of a date
+            range. All images in the range from `start_date` to `end_date` will
+            be returned in a JSON array. Cannot be used with `date`.
+          required: false
+          schema: null
+        - name: end_date
+          in: query
+          description: >
+            A string in `YYYY-MM-DD` format indicating that end of a date range.
+            If `start_date` is specified without an `end_date` then `end_date`
+            defaults to the current date.
+          required: false
+          schema: null
+        - name: thumbs
+          in: query
+          description: >
+            A boolean parameter indicating whether the API should return a
+            thumbnail image URL for video files. If set to `True`, the API
+            returns the URL of the video thumbnail. If an APOD is not a video, this
+            parameter is ignored.
+          required: false
+          schema:
+            enum:
+              - "True"
+              - "False"
+      x-codeSamples:
+        - lang: cURL
+          label: CLI
+          source: >
+            curl
+            https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY&concept_tags=true&count=2
+      responses:
+        "200":
+          description: >-
+            The response contains either a JSON object (that represents a picture of the day), 
+            or an array with multiple JSON objects.
+
+
+
+            A JSON object is returned if the `date` parameter is specified (defaults to today if not specified).
+            An array is returned if the `start_date`, the `end_date`, or the `count` parameters are supplied.
+
+
+            The attributes of the response below may or may not be present in the response depending 
+            on the data available, and the [APOD microservice](https://github.com/nasa/apod-api) configuration.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  resource:
+                    type: object
+                    description: >-
+                      A dictionary describing the `image_set` or `planet` that
+                      the response illustrates, completely determined by the
+                      structured endpoint.
+                  concept_tags:
+                    type: string boolean
+                    description: >-
+                      A reflection of the supplied `concept_tags` query
+                      parameter. Included in response because of default values.
+                    enum:
+                      - "True"
+                      - "False"
+                  title:
+                    type: string
+                    description: >-
+                      Title of the image e.g. `Comet Leonard Closeup from
+                      Australia`.
+                  date:
+                    type: string
+                    description: Date of the image. e.g. `2020-01-02`.
+                  url:
+                    type: string
+                    description: URL of the APOD image or video of the day.
+                  hdurl:
+                    type: string
+                    description: >-
+                      URL for any high-resolution image for that day. Returned
+                      regardless of the supplied `hd` parameter, but will be
+                      omitted in response **if** it does not exist originally at
+                      APOD.
+                  media_type:
+                    type: string
+                    description: >-
+                      The type of media (data) returned. May either be `image`
+                      or `video` depending on content.
+                    enum:
+                      - image
+                      - video
+                  explanation:
+                    type: string
+                    description: The supplied text explanation of the image.
+                  concepts:
+                    type: string
+                    description: >-
+                      The most relevant concepts within the text explanation.
+                      Supplied only if the `concept_tags` query parameter is
+                      set to `True`.
+
+
+                      Concept tags could be used as tags in social media feeds,
+                      or help with the image search.
+
+
+                      The tags are derived from common search tags that are
+                      associated with the description text.
+                  thumbnail_url:
+                    type: string
+                    description: URL of the thumbnail of the video.
+                  copyright:
+                    type: string
+                    description: Name of the copyright holder.
+                  service_version:
+                    type: string
+                    description: APOD service version.
+              examples:
+                retrieve_apods:
+                  $ref: "#/components/examples/retrieve_apods"
+components:
+  examples:
+    retrieve_apods:
+      value:
+        - concepts: concept_tags functionality turned off in current service
+          date: "1995-07-13"
+          explanation: >-
+            July 13, 1995    A String Of Pearls  Picture Credit: NASA, Hubble
+            Space Telescope (courtesy of H. Weaver)  Explanation:  Comet
+            Shoemaker-Levy 9, named after its co-discoverers, was often referred
+            to as the "string of pearls" comet. It is famous for its unusual
+            appearance as well as its collision with the planet Jupiter! The
+            comet's original single nucleus was torn to pieces by Jupiter's
+            strong gravity during a close encounter with the solar system's
+            largest planet in 1992. The pieces are seen in this composite of
+            Hubble Space Telescope images to be "pearls" strung out along the
+            comet's orbital path. In July of 1994 these pieces collided with
+            Jupiter in a unique and spectacular series of events.  For more
+            information about the picture see the Split Comet Studies Page.  We
+            keep an archive of Astronomy Pictures of the Day.   Astronomy
+            Picture of the Day is brought to you by  Robert Nemiroff and  Jerry
+            Bonnell . Original material on this page is copyrighted to Robert J.
+            Nemiroff and Jerry T. Bonnell.
+          hdurl: https://apod.nasa.gov/apod/image/stringofpearls.gif
+          media_type: image
+          service_version: v1
+          title: A String Of Pearls
+          url: https://apod.nasa.gov/apod/image/stringofpearls.gif
+        - concepts: concept_tags functionality turned off in current service
+          copyright: SAAO
+          date: "2009-01-29"
+          explanation: >-
+            Of course, everyone is concerned about what to wear to a solar
+            eclipse. This is a great example though, especially for the first
+            eclipse of the International Year of Astronomy 2009. In the picture,
+            recorded during the January 26 solar eclipse from the grounds of the
+            South African Astronomical Observatory at Cape Town, repeated images
+            of the eclipse adorn a well-chosen shirt. The effect is familiar to
+            eclipse enthusiasts as small gaps, commonly between leaves on trees,
+            act as pinhole cameras to generate multiple recognizable images of
+            the eclipse. From the Cape Town perspective, the solar eclipse was a
+            partial one, with a maximum of about 65% of the Sun covered. But
+            along a track extending across the Indian Ocean and western
+            Indonesia the eclipse became annular, the solar disk briefly
+            appearing as a fiery ring around the silhouetted Moon.   digg_url =
+            'http://apod.nasa.gov/apod/ap090129.html'; digg_skin = 'compact';
+          hdurl: https://apod.nasa.gov/apod/image/0901/eclipseshirt_fishley.jpg
+          media_type: image
+          service_version: v1
+          title: Eclipse Shirt 2009
+          url: https://apod.nasa.gov/apod/image/0901/eclipseshirt_fishley_c600.jpg
